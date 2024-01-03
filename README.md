@@ -10,7 +10,7 @@ The \src folder contains the entire MATLAB implementations of all the numerical 
 - \Example2 contains codes for numerical experiments in Section 6.2.  
 - \Example3 contains codes for numerical experiments in Section 6.3.  
 ## 2 Environment
-The codes were written and run in MATLAB R2022a, on Windows 10 Professional 64-bit OS, with lntel(R) Xeon(R) Gold 6248R CPU@3.00GHz. 256GB RAM
+The codes were written and run in MATLAB R2022a, on Windows 10 Professional 64-bit OS, with lntel(R) Xeon(R) Gold 6248R CPU\@3.00GHz. 256GB RAM
 ## 3 Details on implementation
 In Section 6.1, Figures 1-4 are obtained by implementing the following file in \Example1\ Margin\_compare:  
 -- KrigEuro_cokriging_deri.m  
