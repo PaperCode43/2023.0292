@@ -1,0 +1,49 @@
+function [Phi,Va,delta1,Vd1,delta2,Vd2,Vmatrix]=basket_MC3(S0,r,sigma,T,Rho,N,K1,K2,K3,K4,K5,K6)
+M=size(S0,1);
+Phi=zeros(M,1);delta1=zeros(M,1);delta2=zeros(M,1);
+Va=zeros(M,1);Vd1=zeros(M,1);Vd2=zeros(M,1);
+vVdS1=zeros(M,1);vVdS2=zeros(M,1);vdS1dS2=zeros(M,1);
+Sigma=(sigma'*sigma).*Rho;
+A=chol(Sigma,'lower');
+for i=1:M
+    Z0=normrnd(0,1,2,N);
+    Z=A*Z0;
+    ST=zeros(N,2);
+    ST(:,1)=S0(i,1)*exp((r-1/2*sigma(1)^2)*T(i)+sqrt(T(i))*Z(1,:));
+    ST(:,2)=S0(i,2)*exp((r-1/2*sigma(2)^2)*T(i)+sqrt(T(i))*Z(2,:));
+    prodS=prod(ST,2).^(1/2);
+    c1_MCm=exp(-r*T(i))*(max(prodS-K1,0));
+    c2_MCm=exp(-r*T(i))*(max(prodS-K2,0));
+    c3_MCm=exp(-r*T(i))*(max(prodS-K3,0));
+    c4_MCm=exp(-r*T(i))*(max(prodS-K4,0));
+    c5_MCm=exp(-r*T(i))*(max(prodS-K5,0));
+    c6_MCm=exp(-r*T(i))*(max(prodS-K6,0));
+    p=-20*c2_MCm+10*c1_MCm+10*c3_MCm-2*c5_MCm+1*c4_MCm+1*c6_MCm;
+    Phi(i)=mean(p);
+    Va(i)=var(p)/N;
+    
+    %%delta
+    D11_MCm=exp(-r*T(i))*(prodS>K1).*prodS/S0(i,1)/2;
+    D21_MCm=exp(-r*T(i))*(prodS>K2).*prodS/S0(i,1)/2;
+    D31_MCm=exp(-r*T(i))*(prodS>K3).*prodS/S0(i,1)/2;
+    D41_MCm=exp(-r*T(i))*(prodS>K4).*prodS/S0(i,1)/2;
+    D51_MCm=exp(-r*T(i))*(prodS>K5).*prodS/S0(i,1)/2;
+    D61_MCm=exp(-r*T(i))*(prodS>K6).*prodS/S0(i,1)/2;
+    D1=-20*D21_MCm+10*D11_MCm+10*D31_MCm-2*D51_MCm+1*D41_MCm+1*D61_MCm;
+    delta1(i)=mean(D1);
+    Vd1(i)=var(D1)/N;
+    D12_MCm=exp(-r*T(i))*(prodS>K1).*prodS/S0(i,2)/2;
+    D22_MCm=exp(-r*T(i))*(prodS>K2).*prodS/S0(i,2)/2;
+    D32_MCm=exp(-r*T(i))*(prodS>K3).*prodS/S0(i,2)/2;
+    D42_MCm=exp(-r*T(i))*(prodS>K4).*prodS/S0(i,2)/2;
+    D52_MCm=exp(-r*T(i))*(prodS>K5).*prodS/S0(i,2)/2;
+    D62_MCm=exp(-r*T(i))*(prodS>K6).*prodS/S0(i,2)/2;
+    D2=-20*D22_MCm+10*D12_MCm+10*D32_MCm-2*D52_MCm+1*D42_MCm+1*D62_MCm;
+    delta2(i)=mean(D2);
+    Vd2(i)=var(D2)/N;
+%%% covariance
+    covVdS1=cov(p,D1);vVdS1(i)=covVdS1(1,2)/N;
+    covVdS2=cov(p,D2);vVdS2(i)=covVdS2(1,2)/N;
+    covdS1dS2=cov(D1,D2);vdS1dS2(i)=covdS1dS2(1,2)/N;
+end
+Vmatrix=[diag(Va),diag(vVdS1),diag(vVdS2);diag(vVdS1),diag(Vd1),diag(vdS1dS2);diag(vVdS2),diag(vdS1dS2),diag(Vd2)];
