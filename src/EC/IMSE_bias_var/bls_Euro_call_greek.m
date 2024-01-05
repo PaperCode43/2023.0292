@@ -1,0 +1,9 @@
+function [V_c,delta,vega,rho,theta]=bls_Euro_call_greek(S,K,r,sigma,t,T)
+tau=T-t;
+d1=1./(sigma.*sqrt(tau)).*(log(S./K)+(r+sigma.^2/2).*tau);
+d2=d1-sigma.*sqrt(tau);
+V_c = normcdf(d1,0,1).*S-normcdf(d2,0,1).*K.*exp(-r.*tau);
+delta= normcdf(d1,0,1);
+vega = S.*sqrt(T).*normpdf(d1,0,1);
+rho = K.*tau.*exp(-r.*tau).*normcdf(d2,0,1);
+theta = -(- S.*normpdf(d1,0,1).*sigma./(2*sqrt(tau))-r.*K.*exp(-r.*tau).*normcdf(d2,0,1));
