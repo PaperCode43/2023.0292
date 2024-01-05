@@ -29,7 +29,13 @@ In Section 6.2, Figure 8 is obtained by implementing the following file in \Exam
 Figure 9 is obtained by implementing the following file in \Example2\hedging\_effect  
 -- hedge_var.m  
 
-In Section 6.2, Figure 10 and Table 2 are obtained by implementing the following file in \Example3\Example3-1\  
+In Section 6.3, Figure 10 and Table 2 are obtained by implementing the following file in \Example3\Example3-1\  
 -- run_BS.m  
 Figures 11-12 and Table 3 are obtained by implementing the following file in \Example3\Example3-2\  
 -- run40.m
+
+In Section EC.9 (E-Companion), Figures EC.1 and EC.2 are obtained by implementing the following file in \EC\IMSE\_bias\_var\  
+-- IMSE_all.m 
+
+In Section EC.10 (E-Companion), Figures EC.3 and EC.7 are obtained by implementing the following file in \EC\LHS\_IMSE\  
+-- IMSE_all.m 
